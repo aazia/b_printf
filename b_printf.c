@@ -6,7 +6,7 @@
 /*   By: azkeever <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 15:24:15 by azkeever          #+#    #+#             */
-/*   Updated: 2018/09/20 12:32:03 by azkeever         ###   ########.fr       */
+/*   Updated: 2018/09/22 12:08:38 by azkeever         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@ int		ft_numsize(unsigned long nbr, int base)
 
 char	*ft_itoa(unsigned int base, unsigned long nbr)
 {
-	char *str;
-	char *tab;
-	int	nb;
-	int nb2;
+	char	*str;
+	char	*tab;
+	int		nb;
+	int		nb2;
 
 	nb = ft_numsize(nbr, base);
 	nb2 = nb;
@@ -86,61 +86,66 @@ char	*ft_itoa(unsigned int base, unsigned long nbr)
 	while (nbr != 0)
 	{
 		str[--nb] = tab[nbr % base];
-		nbr /=base;
+		nbr /= base;
 	}
 	str[nb2] = '\0';
 	return (str);
 }
 
-int		cvhandle(char c, va_list ap)
+int		numhandle(char c, va_list ap)
 {
-	char *str;
-	int i;
+	char	*str;
+	int		i;
 
+	str = NULL;
 	i = 0;
-	if (c == 's')
-		str = va_arg(ap, char *);
-	else if (c == 'd' || c =='i')
+	if (c == 'd' || c == 'i')
 		str = ft_itoa(10, ft_abs(va_arg(ap, int)));
-	else if (c == 'p')
-		str = ft_itoa(16, va_arg(ap, unsigned long));
 	else if (c == 'o')
 		str = ft_itoa(8, va_arg(ap,  unsigned int));
 	else if (c == 'u')
 		str = ft_itoa(10, va_arg(ap, unsigned int));
 	else if (c == 'x')
 		str = ft_itoa(16, va_arg(ap,  unsigned int));
-	else if (c == 'c')
+	else if (c == 'p')
 	{
-		i++;
-		ft_putchar(va_arg(ap, int));
+		str = ft_itoa(16, va_arg(ap, unsigned long));
+		i += 2;
+		ft_putstr("0x");
+	}
+	i += ft_strlen(str);	
+	ft_putstr(str);
+	free(str);
+	return (i);
+}
+
+int		cvhandle(char c, va_list ap)
+{
+	char *str;
+
+	str = NULL;
+	if (c == 'c' || c == '%')
+	{
+		c == 'c' ? ft_putchar(va_arg(ap, int)) : ft_putchar('%');
+		return (1);
+	}
+	else if (c == 's')
+	{
+		str = va_arg(ap, char *);
+		ft_putstr(str);
+		return (ft_strlen(str));
 	}
 	else
-	{
-		ft_putchar('%');
-		i++;
-	}
-	if (c != 'c')
-	{
-		if (c == 'p')
-		{
-			i += 2;
-			ft_putstr("0x");
-		}
-		ft_putstr(str);
-		i += ft_strlen(str);
-		if (c != 's')
-			free(str);
-	}
-	return (i);
+		return (numhandle(c, ap));
+	return (0);
 }
 
 int		b_printf(char *str, ...)
 {
-	int i;
-	va_list ap;
-	int j;
-	int k;
+	int		i;
+	va_list	ap;
+	int		j;
+	int		k;
 
 	i = 0;
 	j = 0;
@@ -149,9 +154,7 @@ int		b_printf(char *str, ...)
 	while (str[i])
 	{
 		if (str[i] == '%')
-		{
 			j += cvhandle(str[++i], ap);
-		}
 		else
 		{
 			ft_putchar(str[i]);
