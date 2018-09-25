@@ -1,36 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t.c                                                :+:      :+:    :+:   */
+/*   ft_cvhandle.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azkeever <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/22 13:42:42 by azkeever          #+#    #+#             */
-/*   Updated: 2018/09/24 15:47:08 by azkeever         ###   ########.fr       */
+/*   Created: 2018/09/24 14:15:33 by azkeever          #+#    #+#             */
+/*   Updated: 2018/09/24 14:35:44 by azkeever         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-int		b_printf(char *str, ...)
+int		ft_cvhandle(char c, va_list ap)
 {
-	int		i;
-	int		j;
-	va_list	ap;
+	char *str;
 
-	i = 0;
-	j = 0;
-	va_start(ap, str);
-	while (str[i])
+	str = NULL;
+	if (c == 'c' || c == '%')
 	{
-		if (str[i] == '%')
-			j += ft_cvhandle(str[++i], ap);
-		else
-		{
-			ft_putchar(str[i]);
-			j++;
-		}
-		i++;
+		(c == 'c') ? ft_putchar(va_arg(ap, int)) : ft_putchar('%');
+		return (1);
 	}
-	return (j);
+	else if (c == 's')
+	{
+		str = va_arg(ap, char *);
+		ft_putstr(str);
+		return (ft_strlen(str));
+	}
+	else
+		return (ft_numhandle(c, ap));
+	return (0);
 }

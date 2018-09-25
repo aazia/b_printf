@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t.c                                                :+:      :+:    :+:   */
+/*   ft_itoa_base.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azkeever <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/22 13:42:42 by azkeever          #+#    #+#             */
-/*   Updated: 2018/09/24 15:47:08 by azkeever         ###   ########.fr       */
+/*   Created: 2018/09/24 14:18:07 by azkeever          #+#    #+#             */
+/*   Updated: 2018/09/24 15:44:52 by azkeever         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-int		b_printf(char *str, ...)
+char	*ft_itoa_base(unsigned long n, int base)
 {
+	char	*str;
+	char	*hex;
 	int		i;
-	int		j;
-	va_list	ap;
 
-	i = 0;
-	j = 0;
-	va_start(ap, str);
-	while (str[i])
+	i = ft_numlen(n, base);
+	hex = "0123456789abcdef";
+	str = (char *)malloc(sizeof(char) * (i + 1));
+	ft_bzero(str, i + 1);
+	str[0] = '0';
+	str[i] = '\0';
+	while (n)
 	{
-		if (str[i] == '%')
-			j += ft_cvhandle(str[++i], ap);
-		else
-		{
-			ft_putchar(str[i]);
-			j++;
-		}
-		i++;
+		str[--i] = hex[n % base];
+		n /= base;
 	}
-	return (j);
+	return (str);
 }

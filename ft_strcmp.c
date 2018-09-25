@@ -1,36 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t.c                                                :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azkeever <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/22 13:42:42 by azkeever          #+#    #+#             */
-/*   Updated: 2018/09/24 15:47:08 by azkeever         ###   ########.fr       */
+/*   Created: 2018/09/05 15:12:55 by azkeever          #+#    #+#             */
+/*   Updated: 2018/09/18 16:30:20 by azkeever         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-int		b_printf(char *str, ...)
+int		ft_strcmp(const char *s1, const char *s2)
 {
-	int		i;
-	int		j;
-	va_list	ap;
-
-	i = 0;
-	j = 0;
-	va_start(ap, str);
-	while (str[i])
+	while ((unsigned char)*s1 == (unsigned char)*s2)
 	{
-		if (str[i] == '%')
-			j += ft_cvhandle(str[++i], ap);
-		else
-		{
-			ft_putchar(str[i]);
-			j++;
-		}
-		i++;
+		if (*s1 == '\0' && *s2 == '\0')
+			return (0);
+		s1++;
+		s2++;
 	}
-	return (j);
+	return ((unsigned char)*s1 - (unsigned char)*s2);
 }

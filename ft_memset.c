@@ -1,36 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t.c                                                :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azkeever <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/22 13:42:42 by azkeever          #+#    #+#             */
-/*   Updated: 2018/09/24 15:47:08 by azkeever         ###   ########.fr       */
+/*   Created: 2018/09/10 15:36:07 by azkeever          #+#    #+#             */
+/*   Updated: 2018/09/18 16:29:24 by azkeever         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-int		b_printf(char *str, ...)
+void	*ft_memset(void *b, int c, size_t len)
 {
-	int		i;
-	int		j;
-	va_list	ap;
+	unsigned char	*ptr;
 
-	i = 0;
-	j = 0;
-	va_start(ap, str);
-	while (str[i])
-	{
-		if (str[i] == '%')
-			j += ft_cvhandle(str[++i], ap);
-		else
-		{
-			ft_putchar(str[i]);
-			j++;
-		}
-		i++;
-	}
-	return (j);
+	ptr = (unsigned char *)b;
+	while (len--)
+		*ptr++ = (unsigned char)c;
+	return (b);
 }
